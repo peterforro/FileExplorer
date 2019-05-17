@@ -1,0 +1,156 @@
+﻿<Window x:Class="SanityArchiver.DesktopUI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:node="clr-namespace:SanityArchiver.Application.Models.Node;assembly=SanityArchiver.Application"
+        xmlns:io="clr-namespace:System.IO;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Sanity Archiver"
+        Height="450"
+        Width="1246.533" Background="#FFD1D1D1">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="171*" />
+            <ColumnDefinition Width="134*" />
+        </Grid.ColumnDefinitions>
+        <TreeView ItemsSource="{Binding Nodes}"
+                  x:Name="TreeView"
+                  Margin="0,0,436,0"
+                  SelectedItemChanged="TreeView_SelectedItemChanged" Background="#FFEAEAEA" FontWeight="Bold">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type node:FileSystemNode}"
+                                          ItemsSource="{Binding Nodes}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path=Name}" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded"
+                            Value="{Binding IsExpanded, Mode=TwoWay}">
+                    </Setter>
+                </Style>
+            </TreeView.Resources>
+        </TreeView>
+        <TextBlock HorizontalAlignment="Left"
+                   Margin="510,187,0,0"
+                   TextWrapping="Wrap"
+                   Text="TextBlock"
+                   VerticalAlignment="Top" />
+        <DataGrid x:Name="DataGrid1"
+                  AutoGenerateColumns="False"
+                  Margin="253,24,0,0"
+                  Grid.ColumnSpan="2" Background="#FFEAEAEA" FontWeight="Bold">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="Select">
+                </DataGridCheckBoxColumn>
+                <DataGridTemplateColumn Header="File Name"
+                                        Width="*"
+                                        >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type io:FileInfo}">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="File size"
+                                        Width="*"
+                                        IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type io:FileInfo}">
+                            <TextBlock Text="{Binding Length}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Creation Date"
+                                        Width="*"
+                                        IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type io:FileInfo}">
+                            <TextBlock Text="{Binding CreationTime}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="LastWriteTime"
+                                        Width="*"
+                                        IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type io:FileInfo}">
+                            <TextBlock Text="{Binding LastWriteTime}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Path"
+                                        IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type io:FileInfo}">
+                            <TextBlock Text="{Binding FullName}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="btnCopy"
+                Content="Copy"
+                HorizontalAlignment="Left"
+                Margin="333,1,0,0"
+                VerticalAlignment="Top"
+                Width="75"
+                Click="BtnCopy_Click" FontWeight="Bold" Background="#FF9C9C9C" />
+        <Button x:Name="btnMove"
+                Content="Move"
+                HorizontalAlignment="Left"
+                Margin="413,1,0,0"
+                VerticalAlignment="Top"
+                Width="75"
+                Click="BtnMove_Click" FontWeight="Bold" Background="#FF9C9C9C"/>
+        <Button Content="Delete"
+                HorizontalAlignment="Left"
+                Margin="493,1,0,0"
+                VerticalAlignment="Top"
+                Width="75"
+                Click="BtnDelete_Click" FontWeight="Bold" Background="#FF9C9C9C"/>
+        <Button x:Name="CompressBtn" Content="Compress"
+                HorizontalAlignment="Left"
+                Margin="573,1,0,0"
+                VerticalAlignment="Top"
+                Width="75" Click="CompressBtn_Click" FontWeight="Bold" Background="#FF9C9C9C" />
+        <TextBox x:Name="SearchBox"
+                 HorizontalAlignment="Left"
+                 Height="18"
+                 Margin="373,0,0,0"
+                 TextWrapping="Wrap"
+                 Text="Search"
+                 VerticalAlignment="Top"
+                 Width="120"
+                 Grid.Column="1" GotFocus="SearchBox_GotFocus" FontWeight="Bold" />
+        <Button Content="Go"
+                HorizontalAlignment="Left"
+                Margin="498,1,0,0"
+                VerticalAlignment="Top"
+                Width="35"
+                Height="18"
+                Grid.Column="1"
+                RenderTransformOrigin="1.402,0.57" />
+        <Label x:Name="dirLabel"
+               Content="Path:"
+               HorizontalAlignment="Left"
+               Margin="47,-3,0,0"
+               VerticalAlignment="Top"
+               Width="232" FontSize="14" FontWeight="Bold" Foreground="Black" Grid.Column="1" />
+        <Button x:Name="btnPaste"
+                Content="Paste"
+                VerticalAlignment="Top"
+                Margin="253,1,356,0"
+                Click="BtnPaste_Click" FontWeight="Bold" Background="#FF9C9C9C" />
+        <Button Content="Go" HorizontalAlignment="Left" Margin="499,0,0,0" VerticalAlignment="Top" Width="35" Height="18" Click="Button_Click" Grid.Column="1" RenderTransformOrigin="1.402,0.57" FontWeight="Bold" Background="#FF9C9C9C"/>
+        <Label x:Name="searchTime" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="318,-3,0,0" VerticalAlignment="Top" Height="23" Width="54" FontWeight="Bold" Foreground="Black"/>
+        <Button x:Name="Attributes"
+            Content="Attributes"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Width="75"
+            Margin="653,1,0,0" FontWeight="Bold" Background="#FF9C9C9C" Grid.ColumnSpan="2" Click="Attributes_Click" />
+    </Grid>
+</Window>
